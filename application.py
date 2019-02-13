@@ -7,17 +7,18 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 socketio = SocketIO(app)
 
-# # Ensure templates are auto-reloaded
-# app.config["TEMPLATES_AUTO_RELOAD"] = True
+# Ensure templates are auto-reloaded
+app.config["TEMPLATES_AUTO_RELOAD"] = True
 
-# @app.after_request
-# def after_request(response):
-#     response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
-#     response.headers["Expires"] = 0
-#     response.headers["Pragma"] = "no-cache"
-#     return response
+@app.after_request
+def after_request(response):
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response.headers["Expires"] = 0
+    response.headers["Pragma"] = "no-cache"
+    return response
 
 users=[] # users logged in
+rooms=[]
 
 class ChatRoom:
     roomName=''
@@ -26,8 +27,6 @@ class ChatRoom:
     def __init__(self,roomName):
         self.roomName=roomName
     
-
-
 
 @app.route("/")
 def login():
@@ -40,10 +39,14 @@ def login():
 #     else:
 #         return "FALSE"
 
-@app.route('/chatLobby', methods=["POST"])
+@app.route('/chatLobby', methods=["GET","POST"])
 def chatLobby():
-    dname=request.form.get('dname')
-    return render_template('rooms.html', dname=dname)
+    if request.method=="POST":
+        dname=request.form.get('dname')
+        return render_template('rooms.html', dname=dname)
+    elif request.method=="GET":
+        return
+
 
 @app.route('/checkName', methods=["POST"])
 def checkName():
@@ -53,8 +56,18 @@ def checkName():
     else:
         users.append(dname)
         return jsonify({'success':True})
+    return 
 
 
+@socketio.on('createRoom')
+def createRoom(data):
+    rname=data['rname']
+    roomnames=[room.roomName for room in rooms]
+    if rname in roomnames:
+        emit("roomresponse",{"success":False})
+    else:
+        emit("roomresponse",{"success":True,"rname":rname},broadcast=True)
+    
 
 
 

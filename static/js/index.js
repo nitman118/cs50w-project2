@@ -59,7 +59,7 @@ function post(path, params, method) {
                 //run anonymous function after 3 seconds
                 setTimeout(function(){
                     post('/chatLobby',{dname:name})
-                }, 3000);
+                }, 1000);
             }
             else {
                 document.querySelector("#result").innerHTML = "Sorry, try another display name!";
