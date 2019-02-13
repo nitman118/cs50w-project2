@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block title %}
+Welcome
+
+{% endblock%}
+
+{% block js %}
+<script src="{{ url_for('static',filename='js/index.js') }}"></script>
+{% endblock %}
+
+
+{% block styling %}
+
+{% endblock %}
+{% block body %}
+<h1>Welcome!</h1>
+<h3> <span>
+  <form action="#" id="form-login" method="post">
+    Enter your <input type="text" placeholder="display name" id="text-display" autofocus> and 
+    <button type="submit" id="btn-submit-login">get started</button>
+</form>
+</span>
+</h3>
+<br>
+        <div id="result"></div>
+
+        <button id="click-me">CLICK ME!</button>
+{% endblock %}  

@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block title %}
+flabo
+{% endblock%}
+
+{% block js %}
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+<script src="{{ url_for('static',filename='js/rooms.js') }}"></script>
+{% endblock %}
+
+
+{% block styling %}
+
+{% endblock %}
+{% block body %}
+
+Hello, {{ dname }}
+
+
+
+
+{% endblock %}  

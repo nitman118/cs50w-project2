@@ -1,0 +1,8 @@
+Flask
+
+Flask-SocketIO
+
+gevent
+Flask-Session
+
+psycopg2
