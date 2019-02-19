@@ -54,6 +54,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const room_identifier = data[i].split(' ').join('_');
             li.innerHTML = '<a href="#" id="' + room_identifier + '" data-room ="' + room_identifier + '">' + data[i] + '</a>';
             document.querySelector('#id-room-list').append(li);
+            const r_id = "#" + room_identifier;
+            document.querySelector(r_id).onclick = function(){
+                setLinkClickProperty(room_identifier);
+            };
 
         }
     };
@@ -77,8 +81,10 @@ document.addEventListener('DOMContentLoaded', () => {
             li.innerHTML = '<a href="#" id="' + room_identifier + '" data-room ="' + room_identifier + '">' + data.rname + '</a>';
             document.querySelector('#id-room-list').append(li);
             const r_id = "#" + room_identifier;
-            document.querySelector(r_id).onclick = setLinkClickProperty(room_identifier);
-            }
+            document.querySelector(r_id).onclick = function(){
+                setLinkClickProperty(room_identifier);
+            };
+        }
         else {
             alert('room name exists')
         }
