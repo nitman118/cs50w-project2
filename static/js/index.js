@@ -57,6 +57,10 @@ function post(path, params, method) {
                 const contents = `${name} is available!`
                 document.querySelector("#result").innerHTML = contents;
                 //run anonymous function after 3 seconds
+               
+                localStorage.setItem('user_id', name); //store display name in local storage
+                
+                
                 setTimeout(function(){
                     post('/chatLobby',{dname:name})
                 }, 1000);
