@@ -5,6 +5,40 @@ document.addEventListener('DOMContentLoaded', () => {
     // Connect to websocket
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 
+    function setLinkClickProperty(room_identifier){
+        console.log('before if:' + localStorage.getItem('currentRoom'));
+        if (!localStorage.getItem('currentRoom')) {
+            localStorage.setItem('currentRoom', room_identifier);
+        }
+        else {
+            // console.log('else executed');
+            console.log('inside else:' + localStorage.getItem('currentRoom'));
+            socket.emit('leave', { 'user_id': user_id, 'rname': localStorage.getItem('currentRoom') });
+            socket.emit('join', { 'user_id': user_id, 'rname': room_identifier });
+            localStorage.setItem('currentRoom', room_identifier);
+        }
+      
+
+        const li = document.createElement('li');
+        li.innerHTML = "";
+        li.innerHTML = "Room Joined";
+        const ul = document.querySelector("#chatArea");
+        ul.innerHTML = "";
+        ul.append(li);
+
+        socket.on('room_details', data => {
+            console.log('returned Data:'+data);
+            console.log('data length:'+data.length);
+            const ul = document.querySelector("#chatArea");
+            ul.innerHTML="";
+            for (let i=0; i<data.length; i++) {
+                const li = document.createElement('li');
+                li.innerHTML = data[i];
+                console.log('list'+li.innerHTML);
+                ul.append(li);
+            }
+        });
+    }
     // When connected, configure buttons
 
     const request = new XMLHttpRequest();
@@ -43,41 +77,8 @@ document.addEventListener('DOMContentLoaded', () => {
             li.innerHTML = '<a href="#" id="' + room_identifier + '" data-room ="' + room_identifier + '">' + data.rname + '</a>';
             document.querySelector('#id-room-list').append(li);
             const r_id = "#" + room_identifier;
-            document.querySelector(r_id).onclick = () => {
-                console.log('before if:' + localStorage.getItem('currentRoom'));
-                if (!localStorage.getItem('currentRoom')) {
-                    localStorage.setItem('currentRoom', room_identifier);
-                }
-                else {
-                    // console.log('else executed');
-                    console.log('inside else:' + localStorage.getItem('currentRoom'));
-                    socket.emit('leave', { 'user_id': user_id, 'rname': localStorage.getItem('currentRoom') });
-                    socket.emit('join', { 'user_id': user_id, 'rname': room_identifier });
-                    localStorage.setItem('currentRoom', room_identifier);
-                }
-              
-
-                const li = document.createElement('li');
-                li.innerHTML = "";
-                li.innerHTML = "Room Joined";
-                const ul = document.querySelector("#chatArea");
-                ul.innerHTML = "";
-                ul.append(li);
-
-                socket.on('room_details', data => {
-                    console.log('returned Data:'+data);
-                    console.log('data length:'+data.length);
-                    const ul = document.querySelector("#chatArea");
-                    ul.innerHTML="";
-                    for (let i=0; i<data.length; i++) {
-                        const li = document.createElement('li');
-                        li.innerHTML = data[i];
-                        console.log('list'+li.innerHTML);
-                        ul.append(li);
-                    }
-                });
-            };
-        }
+            document.querySelector(r_id).onclick = setLinkClickProperty(room_identifier);
+            }
         else {
             alert('room name exists')
         }
