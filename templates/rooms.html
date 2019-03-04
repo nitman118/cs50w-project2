@@ -14,35 +14,49 @@ flabo
 {% endblock %}
 {% block body %}
 
-Hello, {{ dname }}
-<div id ="container-fluid">
-    <div class="row">
-        <div class="col-3">
-                <ul id="id-room-list">
-                    </ul>
-                    <form> <input type="text" placeholder="add room" id="in-room-name">
-                        <button id="btn-add-room" value="something">Add Room</button>
-                    </form>
-        </div>
-        <div class="col-9">
-                <div>
-                    <ul id="chatArea">
 
-                    </ul>
+
+
+<aside class="menu">
+    <p class="menu-label">
+            Hello, {{ dname }}
+    </p>
+    <div class="sidenav">
+        <ul id="id-room-list">
+            </ul>
+            <form> <input type="text" placeholder="add room" id="in-room-name">
+                <button id="btn-add-room" value="something">Add Room</button>
+            </form>
+        </div>
+</aside>
+
+<main>
+    <div id="container-fluid">
+        <div class="row">
+            <div>
+                <ul id="chatArea">
+    
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <form id="chatForm">
+                <div class="form-group">
+                    <input type="textarea" class="form-control" id="ta-chat" placeholder="Write your message...">
                 </div>
-                <form id="chatForm">
-                        <div class="form-group">
-                          <input type="textarea" class="form-control" id="ta-chat" placeholder="Write your message....">
-                        </div>
-                        <button type="submit" class="btn btn-primary">Send</button>
-                      </form>
+                <button type="submit" class="btn btn-primary">Send</button>
+            </form>
         </div>
-            
+    
     </div>
-        
-</div>
+</main>
 
 
 
 
-{% endblock %}  
+
+
+
+
+
+{% endblock %}

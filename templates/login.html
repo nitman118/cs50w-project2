@@ -13,16 +13,30 @@ Welcome
 
 {% endblock %}
 {% block body %}
-<h1>Welcome!</h1>
-<h3> <span>
-  <form action="#" id="form-login" method="post">
-    Enter your <input type="text" placeholder="display name" id="text-display" autofocus> and 
-    <button type="submit" id="btn-submit-login">get started</button>
-</form>
-</span>
-</h3>
-<br>
-        <div id="result"></div>
 
-        <button id="click-me">CLICK ME!</button>
-{% endblock %}  
+<section class="hero is-warning is-fullheight">
+    <div class="hero-body">
+        <div class="container notification is-primary">
+            <h1 class="title">
+                Welcome to flabo chat!
+            </h1>
+            <h2 class="subtitle">
+                <form action="#" id="form-login" method="post">
+
+                    Enter your <input type="text" class ="is-warning" placeholder="display name" id="text-display" autofocus> and
+                    <button type="submit" class="button is-warning " id="btn-submit-login">get started!</button>
+                </form>
+
+            </h2>
+            <div id="result">
+                    
+                </div>
+        </div>
+    </div>
+</section>
+
+   
+
+
+
+{% endblock %}

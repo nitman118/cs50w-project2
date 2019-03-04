@@ -1,4 +1,4 @@
-
+"use strict";
 document.addEventListener('DOMContentLoaded', () => {
     //disable submit button
     document.querySelector('#btn-submit-login').disabled = true;
@@ -45,6 +45,8 @@ function post(path, params, method) {
     // document.querySelector('#form-login').setAttribute("action","/yo")
 
     document.querySelector('#form-login').onsubmit = () => {
+        const inputBtn = document.querySelector('#btn-submit-login');
+        inputBtn.classList.add('is-loading');
         const request = new XMLHttpRequest();
         const name = document.querySelector('#text-display').value;
         request.open('POST', '/checkName');
@@ -52,6 +54,7 @@ function post(path, params, method) {
         //callback function when request is completed
         request.onload = () => {
             const data = JSON.parse(request.responseText);
+            
 
             if (data.success) {
                 const contents = `${name} is available!`
@@ -59,13 +62,15 @@ function post(path, params, method) {
                 //run anonymous function after 3 seconds
                
                 localStorage.setItem('user_id', name); //store display name in local storage
-                
-                
-                setTimeout(function(){
-                    post('/chatLobby',{dname:name})
-                }, 1000);
+                post('/chatLobby',{dname:name}); //after username is checked, to change url
+                               
+                // setTimeout(function(){
+                // }, 1000);
+                  
             }
             else {
+                inputBtn.classList.remove('is-loading');
+                document.querySelector("#result").style.color='white';
                 document.querySelector("#result").innerHTML = "Sorry, try another display name!";
                 return false;
             }
@@ -84,11 +89,6 @@ function post(path, params, method) {
 
 
     };
-
-function doSome(){
-    alert("How DARE you CLICK ME?HEY!");
-}
-document.querySelector('#click-me').onclick=doSome;
 
 
 });

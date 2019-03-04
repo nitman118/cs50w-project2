@@ -3,22 +3,37 @@
 
 <head>
   <title>{% block title %}{% endblock %}</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
-    integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-  <link rel="stylesheet" href="{{ url_for('static',filename='css/styles.css') }}">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+  <!-- HANDLEBAR -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
+  <!-- BOOTSTRAP -->
+  <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
+  <!-- GOOGLE FONTS -->
+  <!-- <link href="https://fonts.googleapis.com/css?family=Laila|Open+Sans" rel="stylesheet"> -->
+  <!-- CSS
+  <link rel="stylesheet" href="{{ url_for('static',filename='css/styles1.css') }}"> -->
+  <!-- BULMA & FONT AWESOME -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
+  <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+ 
+  <!-- DEBUG -->
+    <!-- <link rel="stylesheet" href="{{ url_for('static',filename='css/debug.css') }}"> -->
+
   {% block js %}
   {% endblock %}
-  <style>
+  
+    
     {% block styling %}
 
     {% endblock %}
-  </style>
+  
 
 </head>
 
 <body>
-  
+
   {% with messages = get_flashed_messages() %}
   {% if messages %}
   <ul class="alert-success">
@@ -46,6 +61,7 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
     integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
     crossorigin="anonymous"></script>
+  
 
 
 </body>

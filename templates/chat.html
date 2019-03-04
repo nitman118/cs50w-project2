@@ -1,0 +1,156 @@
+{% extends "layout.html" %}
+{% block title %}
+flabo
+{% endblock%}
+
+{% block styling%}
+<style>
+    .fl-container{
+border: 2px solid #dedede;
+background-color: #dcf8c6;
+border-radius: 5px;
+padding: 10px;
+margin: 10px 0;
+
+}
+
+.time-right {
+float: right;
+color: #aaa;
+margin-left: 20px;
+font-size: 12px; /*12px from top relative to its old position */
+position: relative; /*position property */
+top:12px;
+
+}
+</style>
+
+
+{% endblock%}
+
+{% block js %}
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+<script src="{{ url_for('static',filename='js/rooms.js') }}"></script>
+
+<script id="chat-template" type="text/x-handlebars-template">
+    {% raw %}
+    <div style="display: flex;">
+            <div class="fl-container">
+                <strong>{{user_name}}</strong>
+                <p>{{msg}}
+                    <span class="time-right">{{timestamp}}</span> </p>
+            </div>
+        </div>
+        {% endraw %}
+  </script>
+{% endblock %}
+
+{% block body %}
+
+<div class="columns is-fullheight is-gapless">
+    <div class="column is-2" style="background-image: url('../static/images/wa_bg.jpg'); height: 95vh;">
+        <aside class="menu">
+            <!-- margin-top:2vh;margin-left: 1vw;margin-right: 0.5vw;  -->
+            <div class="box" style="height: 10vh; margin: 0.5vw;">
+                <article class="media">
+                    <div class="media-left">
+                        <figure class="image is-64x64">
+                            <i class="fas fa-smile" style="height:64px;width: 64px;"></i>
+                        </figure>
+                    </div>
+                    <div class="media-content">
+                        <div class="content">
+                            <p>
+                                <strong>John Smith</strong> <small>@{{dname}}</small>
+                            </p>
+                        </div>
+                        <nav class="level is-mobile">
+                            <div class="level-left">
+                                <a class="level-item" aria-label="reply">
+                                    <span class="icon">
+                                        <i class="fas fa-sign-out-alt"></i>
+                                    </span>
+                                    Sign Out
+                                </a>
+                            </div>
+                        </nav>
+                    </div>
+
+                </article>
+
+            </div>
+
+            <div class="column" style="overflow-y: auto; height: 80vh;">
+                <hr>
+                <div class="menu-label is-centered">
+                    <p>Rooms</p>
+                </div>
+                <ul class="menu-list" id="id-room-list">
+
+                    <li><a style="color: white;">Room1</a></li>
+                    <li><a class="is-active">Room2</a></li>
+                    
+                
+
+
+                </ul>
+            </div>
+            <!-- position: absolute;bottom: 0%;box-sizing: border-box;  -->
+            <div class="column is-centered is-vcentered"
+                style="background-color: lightgray ; width: 100%; height: 8vh;">
+                <div class="field has-addons">
+                    <div class="control is-expanded">
+                        <input class="input " type="text" placeholder="Add Room..." id="in-room-name">
+                    </div>
+                    <div class="control ">
+                        <a class="button is-info" id="btn-add-room">
+                            <i class="fas fa-plus"></i>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </aside>
+
+    </div>
+    <div class="column is-10">
+        <div class="columns is-centered is-multiline" style="height: 100vh;">
+            <div class="column is-11 " style="height:10vh;background-color: #075e54;">
+                <p class="title">Room Header</p>
+            </div>
+            <div class="column is-11" id="chatArea"
+                style="overflow-y:auto; height:80vh; background-image: url('../static/images/chat_area.jpg'); ">
+
+
+                <div style="display: flex;">
+                    <div class="fl-container">
+                        <strong>Nitish</strong>
+                        <p>Lorem ipsum dolor sit amet Lorem ierat sed voluptas nam voluptates ad dignissimos
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit placeat, dolor ullam
+                            repellendus commodi eos expedita possimus sit vero dignissimos, quos magnam aperiam illum
+                            debitis molestias voluptate saepe velit esse!
+                            <span class="time-right">11:01</span> </p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="column is-11 is-centered" style="height:11vh;background-color: lightgray ; position: relative;">
+                <div class="field has-addons" style="position:absolute; top:30%; width:98%;">
+                    <div class="control is-expanded">
+                        <input class="input is-medium is-rounded" type="text" placeholder="Write Message..." id="ta-chat">
+                    </div>
+                    <div class="control">
+                        <a class="button is-info is-medium" id="chatMsg">
+                            <i class="fas fa-comment-alt"></i>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+{%endblock%}

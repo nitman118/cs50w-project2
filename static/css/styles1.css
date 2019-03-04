@@ -1,0 +1,46 @@
+/* Coolors Exported Palette - coolors.co/5dfdcb-7cc6fe-f4faff-8789c0-08090a */
+/* HSL */
+/* RGB */
+* {
+  font-family: "Open Sans", sans-serif;
+}
+
+body {
+  background-color: #f4faff;
+}
+
+#text-display {
+  background-color: #f4faff;
+  border-radius: 10px;
+  text-align: center;
+  border-top-color: #f4faff;
+  font-family: "Laila", serif;
+  border-top: 0px;
+  border-left: 0px;
+  border-right: 0px;
+  border-bottom: 1px solid;
+}
+
+#chatArea {
+  font-family: "Laila", serif;
+}
+
+.sidenav {
+  height: 100%;
+  width: 200px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #7cc6fe;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+main {
+  margin-left: 200px;
+  /* Same as the width of the sidenav */
+  padding: 10px;
+}
+
+/*# sourceMappingURL=styles1.css.map */

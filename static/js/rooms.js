@@ -1,11 +1,14 @@
+"use strict";
 document.addEventListener('DOMContentLoaded', () => {
+
+    const template = Handlebars.compile(document.querySelector('#chat-template').innerHTML); //chat message
     console.log("local storage" + localStorage.getItem('user_id'));
     console.log('rooms js Online');
     const user_id = localStorage.getItem('user_id'); // store user id info
     // Connect to websocket
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 
-    function setLinkClickProperty(room_identifier){
+    function setLinkClickProperty(room_identifier) {
         console.log('before if:' + localStorage.getItem('currentRoom'));
         if (!localStorage.getItem('currentRoom')) {
             localStorage.setItem('currentRoom', room_identifier);
@@ -17,45 +20,39 @@ document.addEventListener('DOMContentLoaded', () => {
             socket.emit('join', { 'user_id': user_id, 'rname': room_identifier });
             localStorage.setItem('currentRoom', room_identifier);
         }
-      
 
-        const li = document.createElement('li');
-        li.innerHTML = "";
-        li.innerHTML = "Room Joined";
-        const ul = document.querySelector("#chatArea");
-        ul.innerHTML = "";
-        ul.append(li);
+        const cArea = document.querySelector("#chatArea");
+        cArea.innerHTML = "";
+        
 
         socket.on('room_details', data => {
-            console.log('returned Data:'+data);
-            console.log('data length:'+data.length);
-            const ul = document.querySelector("#chatArea");
-            ul.innerHTML="";
-            for (let i=0; i<data.length; i++) {
-                const li = document.createElement('li');
-                li.innerHTML = data[i];
-                console.log('list'+li.innerHTML);
-                ul.append(li);
+            console.log('returned Data:' + data);
+            console.log('data length:' + data.length);
+            const chat_area = document.querySelector("#chatArea");
+            chat_area.innerHTML=''; //empties the contents inside the div
+            for (let i = 0; i < data.length; i++) {
+                const content = template({ 'user_name': 'Nitish', 'msg': data[i], 'timestamp': '11:01' });
+                chat_area.innerHTML += content;
             }
         });
     }
     // When connected, configure buttons
 
     const request = new XMLHttpRequest();
-    request.open('POST','/getRooms');
+    request.open('POST', '/getRooms');
     request.send();
-    request.onload=function(){
+    request.onload = function () {
         const data = JSON.parse(request.responseText);
-        console.log('response text:'+data);
-        console.log('response text:'+data.length);
-        for(let i=0; i<data.length; i++){
-            console.log('data:'+data[i]);
+        console.log('response text:' + data);
+        console.log('response text:' + data.length);
+        for (let i = 0; i < data.length; i++) {
+            console.log('data:' + data[i]);
             const li = document.createElement('li');
             const room_identifier = data[i].split(' ').join('_');
             li.innerHTML = '<a href="#" id="' + room_identifier + '" data-room ="' + room_identifier + '">' + data[i] + '</a>';
             document.querySelector('#id-room-list').append(li);
             const r_id = "#" + room_identifier;
-            document.querySelector(r_id).onclick = function(){
+            document.querySelector(r_id).onclick = function () {
                 setLinkClickProperty(room_identifier);
             };
 
@@ -68,6 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let val = document.querySelector('#in-room-name').value;
             console.log(val);
             console.log('data emitted')
+            document.querySelector('#in-room-name').value = '';
             socket.emit('createRoom', { "rname": val })
             return false; //stop the form from being submitted
         }
@@ -78,10 +76,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (data.success) {
             const li = document.createElement('li');
             const room_identifier = data.rname.split(' ').join('_');
-            li.innerHTML = '<a href="#" id="' + room_identifier + '" data-room ="' + room_identifier + '">' + data.rname + '</a>';
+            li.innerHTML = '<a href="#" style="color: white;" id="' + room_identifier + '" data-room ="' + room_identifier + '">' + data.rname + '</a>';
             document.querySelector('#id-room-list').append(li);
             const r_id = "#" + room_identifier;
-            document.querySelector(r_id).onclick = function(){
+            document.querySelector(r_id).onclick = function () {
                 setLinkClickProperty(room_identifier);
             };
         }
@@ -90,22 +88,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    const form = document.querySelector('#chatForm');
-    form.onsubmit = function () {
+    const form = document.querySelector('#chatMsg');
+    form.onclick = function () {
         const text = document.querySelector('#ta-chat').value;
+        document.querySelector('#ta-chat').value = '';
         socket.emit('message', { 'msg': text, 'rname': localStorage.getItem('currentRoom'), 'user_id': localStorage.getItem('user_id') });
-        return false;
+
     }
 
     socket.on('message', data => {
         console.log(data);
-        const li = document.createElement('li');
-        li.innerHTML = data.msg;
-        console.log(li);
-        const ul = document.querySelector("#chatArea");
-        ul.append(li);
 
-    })
+        const content = template({ 'user_name': 'Nitish', 'msg': data.msg, 'timestamp': '11:01' });
+        console.log(content);
+
+        const chat_area = document.querySelector("#chatArea");
+        chat_area.innerHTML += content;
+    });
     // form.onsubm
 
 

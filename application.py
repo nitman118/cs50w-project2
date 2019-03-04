@@ -1,4 +1,5 @@
 import os
+import time
 
 from flask import Flask,render_template,request, jsonify, redirect, url_for
 from flask_socketio import SocketIO, emit, join_room, leave_room
@@ -48,7 +49,7 @@ def login():
 def chatLobby():
     if request.method=="POST":
         dname=request.form.get('dname')
-        return render_template('rooms.html', dname=dname)
+        return render_template('chat.html', dname=dname)
     elif request.method=="GET":
         return
 
@@ -56,6 +57,7 @@ def chatLobby():
 @app.route('/checkName', methods=["POST"])
 def checkName():
     dname=request.form.get('name')
+    time.sleep(1) #sleep for 1 second
     if dname in users:
         return jsonify({'success':False})
     else:
@@ -118,6 +120,11 @@ def getRooms():
     print("response from getrooms:",jsonify(roomNames))
     return jsonify(roomNames)
 
+
+@app.route('/chatTest')
+def chatTest():
+    return render_template('chat.html')
+    
 #This line of code is added since flask run is not supported by flask_socketio
 if __name__=="__main__":
     socketio.run(app)
