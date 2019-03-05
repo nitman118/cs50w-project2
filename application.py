@@ -24,13 +24,16 @@ rooms=set()
 class ChatRoom:
     roomName=''
     history=[]
+    historyTuple=[]
 
     def __init__(self,roomName):
         self.roomName=roomName
         self.history=[] #initialize to make it an instance variable
+        self.historyTuple=[]
 
-    def addMsg(self, msg, userid):
+    def addMsg(self, msg, userid, timestamp):
         self.history.append(userid+":"+msg)
+        self.historyTuple.append((userid,msg, timestamp))
         print(f"added message {msg} to {self.roomName}")
     
 
@@ -89,8 +92,8 @@ def join(data):
         print(f" room name:{r.roomName}")
         if r.roomName==room:
             print(f'executed at{r.roomName}')
-            print(r.history)
-            emit('room_details',r.history) 
+            print(r.historyTuple)
+            emit('room_details',r.historyTuple) 
 
     
 
@@ -106,8 +109,8 @@ def message(data):
     room=data['rname']
     for r in rooms:
         if r.roomName==room:
-            r.addMsg(msg=data['msg'],userid=data['user_id'])
-    emit('message', {'msg':data['user_id']+":"+data['msg']},room=room)
+            r.addMsg(msg=data['msg'],userid=data['user_id'], timestamp=data['timestamp'])
+    emit('message', {'user':data['user_id'], 'msg':data['msg']},room=room)
 
 def test():
     for ro in rooms:

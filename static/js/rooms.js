@@ -1,23 +1,29 @@
 "use strict";
 document.addEventListener('DOMContentLoaded', () => {
-
+    //configure HandleBars
     const template = Handlebars.compile(document.querySelector('#chat-template').innerHTML); //chat message
-    console.log("local storage" + localStorage.getItem('user_id'));
-    console.log('rooms js Online');
+    
     const user_id = localStorage.getItem('user_id'); // store user id info
     // Connect to websocket
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 
+    //define room click actions
     function setLinkClickProperty(room_identifier) {
         console.log('before if:' + localStorage.getItem('currentRoom'));
         if (!localStorage.getItem('currentRoom')) {
             localStorage.setItem('currentRoom', room_identifier);
+            const room = document.getElementById(room_identifier); // grab the room link
+            room.classList.add('is-active');   
+            const roomHeader = document.getElementById('room-header').innerHTML=room.innerHTML;  
         }
         else {
-            // console.log('else executed');
-            console.log('inside else:' + localStorage.getItem('currentRoom'));
             socket.emit('leave', { 'user_id': user_id, 'rname': localStorage.getItem('currentRoom') });
+            const previouRoom = document.getElementById(localStorage.getItem('currentRoom')); // grab the room link
+            previouRoom.classList.remove('is-active'); 
             socket.emit('join', { 'user_id': user_id, 'rname': room_identifier });
+            const room = document.getElementById(room_identifier); // grab the room link
+            room.classList.add('is-active'); 
+            const roomHeader = document.getElementById('room-header').innerHTML=room.innerHTML;
             localStorage.setItem('currentRoom', room_identifier);
         }
 
@@ -31,9 +37,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const chat_area = document.querySelector("#chatArea");
             chat_area.innerHTML=''; //empties the contents inside the div
             for (let i = 0; i < data.length; i++) {
-                const content = template({ 'user_name': 'Nitish', 'msg': data[i], 'timestamp': '11:01' });
+                const user =data[i][0];
+                const msg = data[i][1];
+                const timestamp=data[i][2];
+                const content = template({ 'user_name': user, 'msg': msg, 'timestamp': timestamp });
                 chat_area.innerHTML += content;
             }
+            chat_area.scrollTop=chat_area.scrollHeight; //scroll to the bottom
         });
     }
     // When connected, configure buttons
@@ -43,13 +53,11 @@ document.addEventListener('DOMContentLoaded', () => {
     request.send();
     request.onload = function () {
         const data = JSON.parse(request.responseText);
-        console.log('response text:' + data);
-        console.log('response text:' + data.length);
         for (let i = 0; i < data.length; i++) {
             console.log('data:' + data[i]);
             const li = document.createElement('li');
             const room_identifier = data[i].split(' ').join('_');
-            li.innerHTML = '<a href="#" id="' + room_identifier + '" data-room ="' + room_identifier + '">' + data[i] + '</a>';
+            li.innerHTML = '<a href="#" style="color: white;" id="' + room_identifier + '" data-room ="' + room_identifier + '">' + data[i] + '</a>';
             document.querySelector('#id-room-list').append(li);
             const r_id = "#" + room_identifier;
             document.querySelector(r_id).onclick = function () {
@@ -92,18 +100,22 @@ document.addEventListener('DOMContentLoaded', () => {
     form.onclick = function () {
         const text = document.querySelector('#ta-chat').value;
         document.querySelector('#ta-chat').value = '';
-        socket.emit('message', { 'msg': text, 'rname': localStorage.getItem('currentRoom'), 'user_id': localStorage.getItem('user_id') });
+        const date = new Date();
+        const dtStr = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+        socket.emit('message', { 'msg': text, 'rname': localStorage.getItem('currentRoom'), 'user_id': localStorage.getItem('user_id'),'timestamp':dtStr });
 
     }
 
     socket.on('message', data => {
         console.log(data);
-
-        const content = template({ 'user_name': 'Nitish', 'msg': data.msg, 'timestamp': '11:01' });
+        const date = new Date();
+        const dtStr = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+        const content = template({ 'user_name': data.user, 'msg': data.msg, 'timestamp': dtStr });
         console.log(content);
 
         const chat_area = document.querySelector("#chatArea");
         chat_area.innerHTML += content;
+        chat_area.scrollTop=chat_area.scrollHeight; //scroll to the bottom
     });
     // form.onsubm
 

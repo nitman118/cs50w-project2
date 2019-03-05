@@ -23,6 +23,10 @@ position: relative; /*position property */
 top:12px;
 
 }
+
+#id-room-list>li>a:hover{
+    color: black!important;
+}
 </style>
 
 
@@ -86,13 +90,7 @@ top:12px;
                     <p>Rooms</p>
                 </div>
                 <ul class="menu-list" id="id-room-list">
-
-                    <li><a style="color: white;">Room1</a></li>
-                    <li><a class="is-active">Room2</a></li>
                     
-                
-
-
                 </ul>
             </div>
             <!-- position: absolute;bottom: 0%;box-sizing: border-box;  -->
@@ -100,7 +98,7 @@ top:12px;
                 style="background-color: lightgray ; width: 100%; height: 8vh;">
                 <div class="field has-addons">
                     <div class="control is-expanded">
-                        <input class="input " type="text" placeholder="Add Room..." id="in-room-name">
+                        <input class="input " type="text" placeholder="Add Room..." id="in-room-name" autocomplete="off">
                     </div>
                     <div class="control ">
                         <a class="button is-info" id="btn-add-room">
@@ -115,8 +113,8 @@ top:12px;
     </div>
     <div class="column is-10">
         <div class="columns is-centered is-multiline" style="height: 100vh;">
-            <div class="column is-11 " style="height:10vh;background-color: #075e54;">
-                <p class="title">Room Header</p>
+            <div class="column is-11" style="height:10vh;background-color: #075e54; border:2px solid black;">
+                <p class="title" id="room-header" style="border: 2px solid black; text-align: center; color: white; margin-top:20px;">Room Header</p>
             </div>
             <div class="column is-11" id="chatArea"
                 style="overflow-y:auto; height:80vh; background-image: url('../static/images/chat_area.jpg'); ">
@@ -138,12 +136,12 @@ top:12px;
             <div class="column is-11 is-centered" style="height:11vh;background-color: lightgray ; position: relative;">
                 <div class="field has-addons" style="position:absolute; top:30%; width:98%;">
                     <div class="control is-expanded">
-                        <input class="input is-medium is-rounded" type="text" placeholder="Write Message..." id="ta-chat">
+                        <input class="input is-medium is-rounded" type="text" placeholder="Write Message..." id="ta-chat" autocomplete="off">
                     </div>
                     <div class="control">
-                        <a class="button is-info is-medium" id="chatMsg">
+                        <button class="button is-info is-medium" id="chatMsg">
                             <i class="fas fa-comment-alt"></i>
-                        </a>
+                        </button>
                     </div>
 
                 </div>
